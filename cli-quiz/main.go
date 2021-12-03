@@ -6,31 +6,24 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 )
 
 func main() {
 	csvFile := flag.String("csv", "problems.csv", "a csv file in format of 'question,answer'")
+	timeLimit := flag.Int("time", 0, "the time limit of the quiz")
 	flag.Parse()
 
 	file := openFile(*csvFile)
 	lines := readLines(file)
 
-	correct := 0
 	problems := parseLines(lines)
-	for i, problem := range problems {
-		fmt.Printf("Problem #%d: %s = ", i+1, problem.question)
-		var answer string
-		fmt.Scanf("%s\n", &answer)
 
-		if problem.isCorrectAnswer(answer) {
-			correct++
-		}
-	}
-
-	fmt.Printf("You scored %d out of %d\n", correct, len(problems))
+	correct := run(problems, time.Duration(*timeLimit))
+	fmt.Printf("\nYou scored %d out of %d\n", correct, len(problems))
 }
 
-// Read the csv file lines
+// readLines - Read the csv file lines
 func readLines(reader io.Reader) [][]string {
 	r := csv.NewReader(reader)
 	lines, err := r.ReadAll()
@@ -41,7 +34,7 @@ func readLines(reader io.Reader) [][]string {
 	return lines
 }
 
-// Open the given file name.
+// openFile - Open the given file name.
 func openFile(name string) *os.File {
 	file, err := os.Open(name)
 	if err != nil {
@@ -51,7 +44,7 @@ func openFile(name string) *os.File {
 	return file
 }
 
-// Print a message and exit the program.
+// exit - Print a message and exit the program.
 func exit(msg string) {
 	fmt.Println(msg)
 	os.Exit(1)

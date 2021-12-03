@@ -7,7 +7,7 @@ type problem struct {
 	answer   string
 }
 
-// parseLines is used to convert the csv file lines
+// parseLines - is used to convert the csv file lines
 // to array of problems
 func parseLines(lines [][]string) []problem {
 	problems := make([]problem, len(lines))
