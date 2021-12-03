@@ -18,3 +18,4 @@ Packages used
 - time
 
 in this part i enhanced the quiz by using the goroutines and channels
+
